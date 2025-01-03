@@ -15,8 +15,6 @@
     "@huggingface/transformers": "^3.2.4",
     "@netlify/plugin-nextjs": "^5.9.2",
     "@supabase/supabase-js": "^2.47.10",
-    "child_process": "^1.0.2",
-    "conda": "^0.0.1-a17",
     "dotenv": "^16.4.7",
     "fs": "^0.0.1-security",
     "heroku": "^10.0.0",
