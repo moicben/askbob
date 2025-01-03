@@ -64,7 +64,7 @@ export default function ContentPage() {
         <meta name="description" content={currentContent.content_desc} />
         <meta name="keywords" content="content, online services, expertise, support" />
         <meta name="author" content="My Expert" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/bob-favicon.png" />
       </Head>
       <Header setResult={handleSearch} />
       <main className='container'>
