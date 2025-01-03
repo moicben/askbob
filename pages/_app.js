@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import '../styles/index.css';
 import { SpeedInsights } from "@vercel/speed-insights/next"
-
+import { Analytics } from "@vercel/analytics/react"
 
 import Head from 'next/head';
 
