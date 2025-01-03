@@ -1,0 +1,16 @@
+.hero{
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.hero h1{
+    margin-bottom: 2rem;
+}
+
+.teaser{
+    width: 560px;
+}

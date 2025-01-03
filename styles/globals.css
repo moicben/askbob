@@ -1,0 +1,298 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&display=swap');
+
+
+html,
+body {
+  background-color: #191A1A;
+  color: #e0e0e0;
+  padding: 0;
+  margin: 0;
+  font-family: 'Albert Sans', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 960px;
+  margin: 0rem auto 8rem auto;
+}
+
+h1, h2, h3 {
+  color: #ffffff;
+}
+
+ul {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+ol {
+  list-style-type: decimal;
+  padding-left: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+li {
+  margin: .5rem 0;
+}
+
+a {
+  text-transform: none;
+  text-decoration: none;
+  color: #4552c6;
+}
+
+p {
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.description {
+  margin-bottom: 2rem;
+  max-width: 760px;
+}
+
+.cta {
+  background: #4552C6;
+  font-weight: bold;
+  padding: 1.5rem 2rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+}
+
+.colored {
+  color: #4552C6;
+}
+
+
+.response{
+  margin: 0 0 1rem 3rem;
+  color:#424242;
+  font-weight: 500;
+}
+
+
+/*HEADER*/
+/* ---- */
+/*HEADER*/
+
+header{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top: 0rem;
+  border-bottom: solid #2b2b2b 1px;
+  background-color: #191A1A;
+  margin-bottom: 2rem;
+}
+
+.search-bar {
+  width: 960px;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 1rem 1.15rem;
+  border: none;
+  border-radius: 1rem;
+  outline: none;
+  font-size: 1rem;
+  color: #e0e0e0;
+  background-color: #212121;
+  margin-right: .75rem;
+  border:solid #212121 1px;
+}
+
+.search-input:focus {
+  border-color: #2c2c2c;
+}
+
+.search-button {
+  border: none;
+  height: 52px;
+  padding: 0 1.25rem;
+  border-radius: 1rem;
+  background-color: #212121;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-button:disabled {
+  cursor: not-allowed;
+}
+
+.search-button:disabled i{
+  color: #191A1A;
+}
+
+.search-button:not(:disabled) {
+  background-color: #2b2b2b;
+}
+
+.arrow-icon {
+  font-size: 1rem;
+}
+
+.logo{
+  font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  position: absolute;
+  left: 4rem;
+  color: white;
+}
+
+
+
+
+
+/*DISPLAY CONTENT */
+/* -------------- */
+/*DISPLAY CONTENT */
+
+
+section{
+  padding: 3rem;
+  background-color: #212121;
+  border-radius: 1.5rem;
+  width: 100%;
+  border: solid #2b2b2b 1px;
+}
+
+hr{
+  width: calc(100% + 6rem);
+  border: solid 1px #2b2b2b;
+  margin: 3rem 0 3rem -3rem;
+}
+
+.content h1{
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.content h2{
+  font-size: 1.5rem;
+  margin: 2.75rem 0 1rem 0;
+  font-weight: 700;
+
+}
+
+.content h3{
+  margin: 2rem 0 .5rem 0;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.content h4{
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 1.5rem 0 .5rem 0;
+}
+
+.content p,
+.content li{
+  color: #929292;
+}
+
+.content table{
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0 2.25rem 0;
+}
+
+.content th,
+.content td{
+  border: solid 1px #2b2b2b;
+  padding: .75rem;
+  text-align: center;
+}
+
+
+
+/*RELATED QUESTIONS */
+/*----------------- */
+/*RELATED QUESTIONS */
+
+.related-questions h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.related-questions h4{
+  font-size: 1rem;
+  padding: 1.25rem 0;
+  font-weight:500;
+  border-top: #2b2b2b 1px solid;
+  cursor: pointer;
+}
+
+.related-questions h4 div:hover{
+  text-decoration: underline;
+}
+
+.related-questions p {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: .75rem 0 0 0;
+  color:#929292 ;
+}
+
+
+
+
+/*RESPONSIVE */
+
+@media (max-width: 1024px) {
+  header{
+    margin-bottom: 1.25rem;
+  }
+
+  .search-bar{
+    padding: 1rem 1.5rem;
+  }
+  
+  .search-input{
+    margin-right: .75rem;
+  }
+
+  .container{
+    margin: 0 1.5rem 4rem 1.5rem;
+  }
+
+  .response{
+    margin: 0 0 1rem 1.5rem;
+  }
+
+  section {
+    padding: 1.5rem;
+  }
+
+  hr{
+    margin: 2rem 0 2rem -1.5rem;
+    width: calc(100% + 3rem);
+  }
+
+  
+}
