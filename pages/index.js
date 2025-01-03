@@ -3,9 +3,6 @@ import Header from '../components/Header';
 import DisplayResult from '../components/DisplayResult';
 import Head from 'next/head';
 
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/react"
-
 const Index = () => {
   const [result, setResult] = useState('');
 
