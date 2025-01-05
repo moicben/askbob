@@ -142,6 +142,14 @@ header{
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: color .4s, background-color .2s;
+}
+
+
+
+
+.slick-slide button:hover{
+background-color: #424242;
 }
 
 .search-button:disabled {
@@ -154,6 +162,10 @@ header{
 
 .search-button:not(:disabled) {
   background-color: #2b2b2b;
+}
+
+.search-button:not(:disabled):hover{
+  background-color: #424242;
 }
 
 .arrow-icon {
@@ -179,7 +191,7 @@ header{
 
 
 .slick-slider{
-  margin-right: -3rem;
+  margin-right: -2.5rem;
 }
 
 .slick-next{
@@ -187,7 +199,7 @@ header{
 }
 
 .slick-slide{
-  padding: 0 3rem 1.5rem 0;
+  padding: 0 2.5rem 1.5rem 0;
   cursor: pointer;
 }
 
@@ -272,9 +284,28 @@ header{
   overflow: hidden;
 }
 
+.iframe-wrapper{
+  overflow: hidden;
+  border-radius: 1rem;
+  background-color: grey;
+  height: 100%;
+  background-color: #212121;
+  border:#2b2b2b solid 1px; 
+}
+
+.iframe-wrapper .spinner{
+  position: absolute;
+  z-index: 0;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
 iframe {
   border: none;
-  border-radius: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .close-button{

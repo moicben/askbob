@@ -237,13 +237,13 @@ export default async function handler(req, res) {
 
 
         // Insert similar search queries into the similars table with slugsv
-        const similars = [
-          { similar_content: request_content, similar_query: similar_query1, similar_slug: similar_query1.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
-          { similar_content: request_content, similar_query: similar_query2, similar_slug: similar_query2.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
-          { similar_content: request_content, similar_query: similar_query3, similar_slug: similar_query3.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
-          { similar_content: request_content, similar_query: similar_query4, similar_slug: similar_query4.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
-          { similar_content: request_content, similar_query: similar_query5, similar_slug: similar_query5.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
-          { similar_content: request_content, similar_query: similar_query6, similar_slug: similar_query6.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') }
+         const similars = [
+          { similar_content: request_content, similar_query: similar_query1.replace(/['"]/g, ''), similar_slug: similar_query1.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
+          { similar_content: request_content, similar_query: similar_query2.replace(/['"]/g, ''), similar_slug: similar_query2.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
+          { similar_content: request_content, similar_query: similar_query3.replace(/['"]/g, ''), similar_slug: similar_query3.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
+          { similar_content: request_content, similar_query: similar_query4.replace(/['"]/g, ''), similar_slug: similar_query4.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
+          { similar_content: request_content, similar_query: similar_query5.replace(/['"]/g, ''), similar_slug: similar_query5.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
+          { similar_content: request_content, similar_query: similar_query6.replace(/['"]/g, ''), similar_slug: similar_query6.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') }
         ];
 
         const { data: similarData, error: similarError } = await supabase

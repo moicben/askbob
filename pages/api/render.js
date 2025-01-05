@@ -19,10 +19,50 @@ async function generateCompletion(prompt) {
   return response.choices[0].message.content.trim();
 }
 
+async function fetchLocals(content) {
+  const { data: localsData, error: localsError } = await supabase
+    .from('locals')
+    .select('*')
+    .eq('local_slug', content);
+
+  if (localsError) {
+    throw new Error('Error fetching locals');
+  }
+
+  return localsData;
+}
+
 export default async function handler(req, res) {
-  const { content, faq, locals, similar } = req.query;
+  const { content } = req.query;
 
   if (content) {
+    console.log("CONTENT : ", content);
+
+    let localsData;
+    try {
+      localsData = await new Promise((resolve, reject) => {
+        let attempts = 0;
+        const intervalId = setInterval(async () => {
+          try {
+        const data = await fetchLocals(content);
+        attempts++;
+        if (data.length >= 3 || attempts >= 4) {
+          clearInterval(intervalId);
+          resolve(data);
+        }
+          } catch (error) {
+        clearInterval(intervalId);
+        reject(error);
+          }
+        }, 500);
+      });
+    } catch (error) {
+      return res.status(500).json({ error: 'Error fetching locals' });
+    }
+
+    console.log("DATA LOCALS : ", localsData);
+
+    // Get the main content 
     const { data: contentData, error: contentError } = await supabase
       .from('contents')
       .select('*')
@@ -33,6 +73,7 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'Content not found' });
     }
 
+    // Get the FAQs
     const { data: faqsData, error: faqsError } = await supabase
       .from('faqs')
       .select('*')
@@ -42,9 +83,20 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Error fetching FAQs' });
     }
 
-    return res.status(200).json({ ...contentData, faqs: faqsData });
+    // Get the similar queries
+    const { data: similarsData, error: similarsError } = await supabase
+      .from('similars')
+      .select('*')
+      .eq('similar_content', contentData.content_request);
+
+    if (similarsError) {
+      return res.status(500).json({ error: 'Error fetching similar queries' });
+    }
+
+    return res.status(200).json({ locals: localsData, ...contentData, faqs: faqsData, similars: similarsData });
   }
 
+  // Get the FAQ body of clicked title
   if (faq) {
     let { data: faqData, error: faqError } = await supabase
       .from('faqs')
@@ -57,8 +109,10 @@ export default async function handler(req, res) {
     }
 
     if (!faqData || !faqData.faq_body) {
+      // Generate the FAQ body using OpenAI if not present
       const faqBody = await generateCompletion(`Generate a short and direct answer for the following question: ${faq}`);
 
+      // Update the FAQ in the database with the generated body
       const { data: updatedFaqData, error: updateError } = await supabase
         .from('faqs')
         .update({ faq_body: faqBody })
@@ -74,32 +128,6 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json(faqData);
-  }
-
-  if (locals) {
-    const { data: localsData, error: localsError } = await supabase
-      .from('locals')
-      .select('*')
-      .eq('local_slug', locals);
-
-    if (localsError) {
-      return res.status(500).json({ error: 'Error fetching locals' });
-    }
-
-    return res.status(200).json(localsData);
-  }
-
-  if (similar) {
-    const { data: similarData, error: similarError } = await supabase
-      .from('similars')
-      .select('*')
-      .eq('similar_content', similar);
-
-    if (similarError) {
-      return res.status(500).json({ error: 'Error fetching similar queries' });
-    }
-
-    return res.status(200).json(similarData);
   }
 
   return res.status(400).json({ error: 'Content, FAQ, Locals, or Similar is required' });
