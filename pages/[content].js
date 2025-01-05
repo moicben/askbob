@@ -79,7 +79,7 @@ export default function ContentPage() {
               {currentContent && currentContent.locals.length > 2 ? (
                 <LocalSlider currentContent={currentContent.locals} />
               ) : (
-                <p>No locals companies</p>
+                <p>No local companies</p>
               )}
               <hr />
               {currentContent && currentContent.content_body ? (
