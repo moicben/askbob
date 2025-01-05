@@ -73,7 +73,7 @@ const LocalSlider = ({ locals }) => {
     <>
       <Slider {...sliderSettings}>
         {locals.map((local, index) => (
-          <div key={index} className="local-slide">
+          <div key={index} className="local-slide" onClick={() => openModal(local.local_website)}>
             <img src={local.local_img} alt={local.local_title} />
             <h4>{local.local_title}</h4>
             <p>{local.local_address || "Private location"}</p>
@@ -83,7 +83,7 @@ const LocalSlider = ({ locals }) => {
               <span className='review-classic'>{local.local_rating}/5</span>
               <p> {local.local_ratingCount} reviews</p>
             </article>
-            <button onClick={() => openModal(local.local_website)}>Discover company</button>
+            <button>Discover company</button>
           </div>
         ))}
       </Slider>

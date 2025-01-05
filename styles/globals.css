@@ -188,6 +188,11 @@ header{
 
 .slick-slide{
   padding: 0 3rem 1.5rem 0;
+  cursor: pointer;
+}
+
+.slick-slide:hover button{
+  background-color: #424242 !important;
 }
 
 .slick-slide h4{
@@ -478,6 +483,7 @@ hr{
 
   section {
     padding: 1.5rem;
+    border-radius: 1rem;
   }
 
   hr{
@@ -486,7 +492,7 @@ hr{
   }
 
   .slick-slider{
-    margin-right: -1.5rem;
+    margin-right: -1rem;
   }
 
   .slick-next {
@@ -533,6 +539,10 @@ hr{
 
   .slick-slide button{
     margin-top: .75rem;
+    font-size: .75rem;
+    padding: .5rem;
+    width: 100%;
+    border-radius: .5rem;
   }
 
   .PopupModal{

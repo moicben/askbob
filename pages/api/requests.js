@@ -187,11 +187,11 @@ export default async function handler(req, res) {
         // Generate similar search queries
         const [similar_query1, similar_query2, similar_query3, similar_query4, similar_query5, similar_query6] = await Promise.all([
           generateCompletion(`Generate a similar search query for: ${request_content}`),
-          generateCompletion(`Generate an how to similar search query for: ${request_content}`),
-          generateCompletion(`Generate why search query for: ${request_content}`),
-          generateCompletion(`Generate an additional similar search query for: ${request_content}`),
-          generateCompletion(`Generate one comparaison search query for: ${request_content}`),
-          generateCompletion(`Generate a complementary search query for: ${request_content}`),
+          generateCompletion(`Generate one "how to" to similar search query for: ${request_content}`),
+          generateCompletion(`Generate one "why" search query for: ${request_content}`),
+          generateCompletion(`Generate one additional similar search query for: ${request_content}`),
+          generateCompletion(`Generate one "comparaison" search query for: ${request_content}`),
+          generateCompletion(`Generate one different search query for: ${request_content}`),
         ]);
 
 
