@@ -79,7 +79,7 @@ const LocalSlider = ({ locals }) => {
             <p>{local.local_address || "Private location"}</p>
             <p>{local.local_phone}</p>
             <article>
-              <span className='review-stars'>{local.local_rating <= 2.7 ? '⭐⭐' : local.local_rating <= 3.7 ? '⭐⭐⭐' : local.local_rating <= 4.7 ? '⭐⭐⭐⭐' : '⭐⭐⭐⭐⭐'}</span>
+              <span className='review-stars'>{local.local_rating <= 3.7 ? '⭐⭐' : local.local_rating <= 4.5 ? '⭐⭐⭐' : local.local_rating <= 4.8 ? '⭐⭐⭐⭐' : '⭐⭐⭐⭐⭐'}</span>
               <span className='review-classic'>{local.local_rating}/5</span>
               <p> {local.local_ratingCount} reviews</p>
             </article>

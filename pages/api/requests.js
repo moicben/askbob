@@ -178,20 +178,20 @@ export default async function handler(req, res) {
 
         // Generate FAQ titles in parallel
         const [content_faq1, content_faq2, content_faq3, content_faq4] = await Promise.all([
-          generateCompletion(`Generate a relevant question based on the following content: ${request_content}`),
           generateCompletion(`Generate a "What" relevant question based on the following content: ${request_content}`),
           generateCompletion(`Generate a "Why" another relevant question based on the following content: ${request_content}`),
-          generateCompletion(`Generate a "How" relevant question based on the following content: ${request_content}`)
+          generateCompletion(`Generate a "How" relevant question based on the following content: ${request_content}`),
+          generateCompletion(`Generate a "When" relevant question based on the following content: ${request_content}`)
         ]);
 
         // Generate similar search queries
         const [similar_query1, similar_query2, similar_query3, similar_query4, similar_query5, similar_query6] = await Promise.all([
           generateCompletion(`Generate a similar search query for: ${request_content}`),
-          generateCompletion(`Generate one "how to" to similar search query for: ${request_content}`),
-          generateCompletion(`Generate one "why" search query for: ${request_content}`),
-          generateCompletion(`Generate one additional similar search query for: ${request_content}`),
-          generateCompletion(`Generate one "comparaison" search query for: ${request_content}`),
-          generateCompletion(`Generate one different search query for: ${request_content}`),
+          generateCompletion(`Generate one "How" to" to similar search query for: ${request_content}`),
+          generateCompletion(`Generate one "Why" search query for: ${request_content}`),
+          generateCompletion(`Generate one "What" similar search query for: ${request_content}`),
+          generateCompletion(`Generate one "Comparaison" short search query for: ${request_content}`),
+          generateCompletion(`Generate one very different search query for: ${request_content}`),
         ]);
 
 
@@ -296,6 +296,9 @@ export default async function handler(req, res) {
                 position: local_position
               } = result;
 
+              // Get a higher resolution image
+              const updatedLocalImg = local_img ? local_img.replace('w=80', 'w=1280').replace('h=92', 'h=720') : null;
+
               return supabase
                 .from('locals')
                 .insert([{
@@ -309,7 +312,7 @@ export default async function handler(req, res) {
                   local_rating,
                   local_ratingCount,
                   local_booking,
-                  local_img,
+                  local_img: updatedLocalImg,
                   local_position
                 }]);
             });
