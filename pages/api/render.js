@@ -20,7 +20,7 @@ async function generateCompletion(prompt) {
 }
 
 export default async function handler(req, res) {
-  const { content, faq } = req.query;
+  const { content, faq, locals, similar } = req.query;
 
   if (content) {
     const { data: contentData, error: contentError } = await supabase
@@ -46,7 +46,6 @@ export default async function handler(req, res) {
   }
 
   if (faq) {
-    // Check if the FAQ body is already present in the database
     let { data: faqData, error: faqError } = await supabase
       .from('faqs')
       .select('faq_body')
@@ -58,10 +57,8 @@ export default async function handler(req, res) {
     }
 
     if (!faqData || !faqData.faq_body) {
-      // Generate the FAQ body using OpenAI if not present
       const faqBody = await generateCompletion(`Generate a short and direct answer for the following question: ${faq}`);
 
-      // Update the FAQ in the database with the generated body
       const { data: updatedFaqData, error: updateError } = await supabase
         .from('faqs')
         .update({ faq_body: faqBody })
@@ -79,5 +76,31 @@ export default async function handler(req, res) {
     return res.status(200).json(faqData);
   }
 
-  return res.status(400).json({ error: 'Content or FAQ is required' });
+  if (locals) {
+    const { data: localsData, error: localsError } = await supabase
+      .from('locals')
+      .select('*')
+      .eq('local_slug', locals);
+
+    if (localsError) {
+      return res.status(500).json({ error: 'Error fetching locals' });
+    }
+
+    return res.status(200).json(localsData);
+  }
+
+  if (similar) {
+    const { data: similarData, error: similarError } = await supabase
+      .from('similars')
+      .select('*')
+      .eq('similar_content', similar);
+
+    if (similarError) {
+      return res.status(500).json({ error: 'Error fetching similar queries' });
+    }
+
+    return res.status(200).json(similarData);
+  }
+
+  return res.status(400).json({ error: 'Content, FAQ, Locals, or Similar is required' });
 }

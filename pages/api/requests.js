@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
+import request from 'request';
 
 dotenv.config();
 
@@ -38,8 +39,6 @@ async function generateBody(prompt) {
   });
   return response.choices[0].message.content.trim();
 }
-
-
 
 // Helper function to generate sitemap
 async function generateSitemap() {
@@ -134,8 +133,6 @@ export default async function handler(req, res) {
 
     `;
 
-
-
     // Generate a slug from the request content
     const request_slug = request_content
       .toLowerCase()
@@ -182,10 +179,21 @@ export default async function handler(req, res) {
         // Generate FAQ titles in parallel
         const [content_faq1, content_faq2, content_faq3, content_faq4] = await Promise.all([
           generateCompletion(`Generate a relevant question based on the following content: ${request_content}`),
-          generateCompletion(`Generate another relevant question based on the following content: ${request_content}`),
-          generateCompletion(`Generate another relevant question based on the following content: ${request_content}`),
-          generateCompletion(`Generate another relevant question based on the following content: ${request_content}`)
+          generateCompletion(`Generate a "What" relevant question based on the following content: ${request_content}`),
+          generateCompletion(`Generate a "Why" another relevant question based on the following content: ${request_content}`),
+          generateCompletion(`Generate a "How" relevant question based on the following content: ${request_content}`)
         ]);
+
+        // Generate similar search queries
+        const [similar_query1, similar_query2, similar_query3, similar_query4, similar_query5, similar_query6] = await Promise.all([
+          generateCompletion(`Generate a similar search query for: ${request_content}`),
+          generateCompletion(`Generate an how to similar search query for: ${request_content}`),
+          generateCompletion(`Generate why search query for: ${request_content}`),
+          generateCompletion(`Generate an additional similar search query for: ${request_content}`),
+          generateCompletion(`Generate one comparaison search query for: ${request_content}`),
+          generateCompletion(`Generate a complementary search query for: ${request_content}`),
+        ]);
+
 
         // Insert a new record and save the content
         const generatedContent = await generatedContentPromise;
@@ -226,6 +234,103 @@ export default async function handler(req, res) {
           throw faqError;
         }
         console.log('Supabase FAQ response data:', faqData); // Log the Supabase FAQ response data
+
+
+        // Insert similar search queries into the similars table with slugsv
+        const similars = [
+          { similar_content: request_content, similar_query: similar_query1, similar_slug: similar_query1.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
+          { similar_content: request_content, similar_query: similar_query2, similar_slug: similar_query2.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
+          { similar_content: request_content, similar_query: similar_query3, similar_slug: similar_query3.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
+          { similar_content: request_content, similar_query: similar_query4, similar_slug: similar_query4.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
+          { similar_content: request_content, similar_query: similar_query5, similar_slug: similar_query5.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') },
+          { similar_content: request_content, similar_query: similar_query6, similar_slug: similar_query6.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') }
+        ];
+
+        const { data: similarData, error: similarError } = await supabase
+          .from('similars')
+          .insert(similars);
+
+        if (similarError) {
+          console.error('Supabase similars error:', similarError); // Log the Supabase similars error
+          throw similarError;
+        }
+        console.log('Supabase similars response data:', similarData); // Log the Supabase similars response data
+
+
+
+        // Make the API call to Google and save the result in the googles table
+        const options = {
+          method: 'POST',
+          url: 'https://google.serper.dev/maps',
+          headers: {
+            'X-API-KEY': 'ff3889fd01deef5ad34b504241ad3ddee7606463',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "q": request_content
+          })
+        };
+
+        request(options, async (error, response) => {
+          if (error) throw new Error(error);
+          const googleData = JSON.parse(response.body);
+          console.log('Google response data:', googleData); // Log the Google response data
+
+          // Extract the places array from the response
+          const placesResults = googleData.places;
+          console.log('Places results:', placesResults); // Log the places results
+          
+          if (placesResults && Array.isArray(placesResults)) {
+            // Iterate over the places array and insert each title into the locals table
+            const insertPromises = placesResults.map((result, index) => {
+              const {
+                title: local_title,
+                address: local_address,
+                website: local_website,
+                type: local_type,
+                phoneNumber: local_phone,
+                rating: local_rating,
+                ratingCount: local_ratingCount,
+                bookingLinks: local_booking,
+                thumbnailUrl: local_img,
+                position: local_position
+              } = result;
+
+              return supabase
+                .from('locals')
+                .insert([{
+                  local_title,
+                  local_address,
+                  local_website,
+                  local_request: request_content,
+                  local_slug: request_slug,
+                  local_type,
+                  local_phone,
+                  local_rating,
+                  local_ratingCount,
+                  local_booking,
+                  local_img,
+                  local_position
+                }]);
+            });
+
+            try {
+              const insertResults = await Promise.all(insertPromises);
+              insertResults.forEach(({ data: localInsertData, error: localInsertError }) => {
+                if (localInsertError) {
+                  console.error('Supabase locals insert error:', localInsertError); // Log the Supabase locals insert error
+                  throw localInsertError;
+                }
+                console.log('Supabase locals insert response data:', localInsertData); // Log the Supabase locals insert response data
+              });
+            } catch (insertError) {
+              console.error('Error inserting into locals table:', insertError); // Log the error
+              throw insertError;
+            }
+          } else {
+            console.error('No places results found in the Google API response');
+          }
+        });
       }
 
       if (error) {
