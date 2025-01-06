@@ -70,7 +70,7 @@ export default async function handler(req, res) {
     const { request_content } = req.body;
 
     const requestPrompt = `
-   Write an SEO-optimized article structured in HTML on the following topic: '${request_content}'. Ensure you follow the **strict formatting rules** and the requirements below:
+   Write an SEO-optimized structured response in HTML for the following topic: '${request_content}'. Ensure you follow the **strict formatting rules** and the requirements below:
 
 ### **Strict Formatting Rules**:
 1. Write only the HTML content. Do not include any '<html>', '<head>', or '<body>' tags.

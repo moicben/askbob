@@ -60,9 +60,59 @@ export default function ContentPage() {
       <Head>
         {currentContent && <title>{currentContent.content_title}</title>}
         {currentContent && <meta name="description" content={currentContent.content_desc} />}
-        <meta name="keywords" content="content, online services, expertise, support" />
+        <meta name="keywords" content={`${currentContent.content_request}, best results, full guide`} />
         <meta name="author" content="My Expert" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="index, follow" />
         <link rel="icon" href="/bob-favicon.png" />
+        
+        {/* Open Graph tags */}
+        {currentContent && (
+          <>
+            <meta property="og:title" content={currentContent.content_title} />
+            <meta property="og:description" content={currentContent.content_desc} />
+            <meta property="og:type" content="article" />
+            <meta property="og:url" content={`https://askbob.online/${router.query.content}`} />
+            <meta property="og:image" content={currentContent.content_image} />
+          </>
+        )}
+
+        {/* Twitter Card tags */}
+        {currentContent && (
+          <>
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={currentContent.content_title} />
+            <meta name="twitter:description" content={currentContent.content_desc} />
+            <meta name="twitter:image" content={currentContent.content_image} />
+          </>
+        )}
+
+        {/* Structured Data */}
+        {currentContent && (
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Article",
+              "headline": currentContent.content_title,
+              "description": currentContent.content_desc,
+              "image": currentContent.content_image,
+              "author": {
+                "@type": "Person",
+                "name": "Bob"
+              },
+              "publisher": {
+                "@type": "Organization",
+                "name": "Askbob.online",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://askbob.online/bob-favicon.png"
+                }
+              },
+              "datePublished": currentContent.content_created_at,
+              "dateModified": currentContent.content_created_at
+            })}
+          </script>
+        )}
       </Head>
       <Header setResult={(query) => handleSearch(query, router)} searchInputRef={searchInputRef} /> {/* Pass searchInputRef */}
       <main className="container">
