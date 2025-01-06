@@ -1,0 +1,17 @@
+User-agent: *
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /server/
+Disallow: /cache/
+Disallow: /build-manifest.json
+Disallow: /react-loadable-manifest.json
+Disallow: /trace
+Disallow: /slugignore
+Disallow: /settings.json
+
+# Allow crawling of all other pages
+Allow: /
+
+# Sitemap location
+Sitemap: https://askbob.online/sitemap.xml

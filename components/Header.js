@@ -41,7 +41,7 @@ const Header = ({ setResult }) => {
         type="text"
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        placeholder="Search for something with Bob..."
+        placeholder="Search for something..."
         className="search-input"
       />
       <button type="submit" disabled={loading || !prompt} className="search-button">

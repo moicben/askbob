@@ -87,99 +87,83 @@ p {
 }
 
 
-/*HEADER*/
-/* ---- */
-/*HEADER*/
 
-header{
-  position: relative;
+/* FORM STYLES */
+/* ----------- */
+/* FORM STYLES */
+
+form {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  position: sticky;
-  top: 0rem;
-  border-bottom: solid #2b2b2b 1px;
-  background-color: #191A1A;
-  margin-bottom: 2rem;
-  z-index: 10;
+  flex-direction: column;
 }
 
-.search-bar {
-  width: 960px;
-  z-index: 1000;
+.form-row{
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem 0rem;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.search-input {
-  flex: 1;
+.form-row label{
+  width: calc(50% - .5rem);
+}
+
+label {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+label span{
+  display: block;
+  color: #929292;
+  margin: 0 0 .75rem .75rem ;
+}
+
+input,textarea{
+  width: 100%;
   padding: 1rem 1.15rem;
-  border: none;
+  background-color: #191A1A;
+  border: solid 1px #2c2c2c;
   border-radius: 1rem;
   outline: none;
   font-size: 1rem;
   color: #e0e0e0;
-  background-color: #212121;
-  margin-right: .75rem;
-  border:solid #212121 1px;
+  font-family: 'Albert Sans', sans-serif;
 }
 
-.search-input:focus {
+input:focus,textarea:focus{
   border-color: #2c2c2c;
 }
 
-.search-button {
-  border: none;
-  height: 52px;
-  padding: 0 1.25rem;
-  border-radius: 1rem;
-  background-color: #212121;
-  color: white;
+
+textarea{
+  resize: none;
+  height: 120px;
+}
+
+button{
+  background-color: #e0e0e0;
+  color: #212121;
   font-weight: bold;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color .4s, background-color .2s;
-}
-
-
-
-
-.slick-slide button:hover{
-background-color: #424242;
-}
-
-.search-button:disabled {
-  cursor: not-allowed;
-}
-
-.search-button:disabled i{
-  color: #424242;
-}
-
-.search-button:not(:disabled) {
-  background-color: #2b2b2b;
-}
-
-.search-button:not(:disabled):hover{
-  background-color: #424242;
-}
-
-.arrow-icon {
+  border: none;
   font-size: 1rem;
+  transition: background-color .4s;
+  font-family: 'Albert Sans', sans-serif;
 }
 
-.logo{
-  font-weight: 700;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.5rem;
-  position: absolute;
-  left: 4rem;
-  color: white;
+button:hover{
+  background-color: #5c5c5c;
 }
+
+
+
+
+
+
+
+
 
 
 

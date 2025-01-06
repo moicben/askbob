@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#__next'); // Set the app element for react-modal
-
 
 const CustomNextArrow = (props) => {
   const { className, style, onClick } = props;
@@ -37,8 +36,6 @@ const LocalSlider = ({ currentContent }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [iframeSrc, setIframeSrc] = useState('');
   const [iframeError, setIframeError] = useState(false);
-
-
 
   const openModal = (url) => {
     setIframeSrc(url);
@@ -78,22 +75,27 @@ const LocalSlider = ({ currentContent }) => {
 
   return (
     <>
-      <Slider {...sliderSettings}>
-        {currentContent.map((local, index) => (
-          <div key={index} className="local-slide" onClick={() => openModal(local.local_website)}>
-            <img src={local.local_img} alt={`${local.local_title} ${local.local_request}`} />
-            <h4>{local.local_title}</h4>
-            <p>{local.local_address || "Private location"}</p>
-            <p>{local.local_phone || "No phone registered"}</p>
-            <article>
-              <span className='review-stars'>{local.local_rating <= 3.3 ? '⭐⭐' : local.local_rating <= 3.9   ? '⭐⭐⭐' : local.local_rating <= 4.5 ? '⭐⭐⭐⭐' : '⭐⭐⭐⭐⭐'}</span>
-              <span className='review-classic'>{local.local_rating}/5</span>
-              <p> {local.local_ratingCount} reviews</p>
-            </article>
-            <button>Discover company</button>
-          </div>
-        ))}
-      </Slider>
+      {currentContent.length > 2 && (
+        <Slider {...sliderSettings}>
+          {currentContent.map((local, index) => (
+            <div key={index} className="local-slide" onClick={() => openModal(local.local_website)}>
+              <img src={local.local_img} alt={`${local.local_title} ${local.local_request}`} />
+              <h4>{local.local_title}</h4>
+              <p>{local.local_address || "Private location"}</p>
+              <p>{local.local_phone || "No phone registered"}</p>
+              <article>
+                <span className='review-stars'>
+                  {local.local_rating <= 3.3 ? '⭐⭐' : local.local_rating <= 3.9 ? '⭐⭐⭐' : local.local_rating <= 4.5 ? '⭐⭐⭐⭐' : '⭐⭐⭐⭐⭐'}
+                </span>
+                <span className='review-classic'>{local.local_rating}/5</span>
+                <p>{local.local_ratingCount} reviews</p>
+              </article>
+              <button>Discover company</button>
+            </div>
+          ))}
+        </Slider>
+        
+      )}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -117,6 +119,7 @@ const LocalSlider = ({ currentContent }) => {
           </div>
         )}
       </Modal>
+      <hr />
     </>
   );
 };

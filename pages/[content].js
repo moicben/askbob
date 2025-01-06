@@ -76,12 +76,7 @@ export default function ContentPage() {
             </div>
           ) : (
             <>
-              {currentContent && currentContent.locals.length > 2 ? (
-                <LocalSlider currentContent={currentContent.locals} />
-              ) : (
-                <p>No local companies</p>
-              )}
-              <hr />
+              <LocalSlider currentContent={currentContent.locals} />
               {currentContent && currentContent.content_body ? (
                 <div className="content" dangerouslySetInnerHTML={{ __html: currentContent.content_body }} />
               ) : (

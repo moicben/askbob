@@ -33,7 +33,7 @@ async function fetchLocals(content) {
 }
 
 export default async function handler(req, res) {
-  const { content } = req.query;
+  const { content, faq, profil } = req.query;
 
   if (content) {
     console.log("CONTENT : ", content);
@@ -44,15 +44,15 @@ export default async function handler(req, res) {
         let attempts = 0;
         const intervalId = setInterval(async () => {
           try {
-        const data = await fetchLocals(content);
-        attempts++;
-        if (data.length >= 3 || attempts >= 4) {
-          clearInterval(intervalId);
-          resolve(data);
-        }
+            const data = await fetchLocals(content);
+            attempts++;
+            if (data.length >= 3 || attempts >= 4) {
+              clearInterval(intervalId);
+              resolve(data);
+            }
           } catch (error) {
-        clearInterval(intervalId);
-        reject(error);
+            clearInterval(intervalId);
+            reject(error);
           }
         }, 500);
       });
@@ -96,7 +96,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ locals: localsData, ...contentData, faqs: faqsData, similars: similarsData });
   }
 
-  // Get the FAQ body of clicked title
+  // Get the FAQ body of clicked one
   if (faq) {
     let { data: faqData, error: faqError } = await supabase
       .from('faqs')
@@ -128,6 +128,20 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json(faqData);
+  }
+
+  if (profil) {
+    let { data: profilData, error: profilError } = await supabase
+      .from('profils')
+      .select('*')
+      .eq('profil_slug', profil)
+      .single();
+
+    if (profilError) {
+      return res.status(500).json({ error: 'Error fetching profil' });
+    }
+
+    return res.status(200).json(profilData);
   }
 
   return res.status(400).json({ error: 'Content, FAQ, Locals, or Similar is required' });

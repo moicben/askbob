@@ -21,7 +21,7 @@ const openai = new OpenAI({
 // Helper function to generate OpenAI completions
 async function generateCompletion(prompt) {
   const response = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo',
+    model: 'gpt-4o',
     messages: [{ role: 'user', content: prompt }],
   });
   return response.choices[0].message.content.trim();
@@ -29,7 +29,7 @@ async function generateCompletion(prompt) {
 
 async function generateBody(prompt) {
   const response = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo',
+    model: 'gpt-4o',
     messages: [{ role: 'user', content: prompt }],
     max_tokens: 3000,
     temperature: 0.7,
@@ -157,7 +157,7 @@ export default async function handler(req, res) {
       }
 
       let data, error;
-
+      
       if (existingData) {
         // If request_content exists, increment the request_count
         const newCount = existingData.request_count + 1;
