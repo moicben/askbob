@@ -24,7 +24,7 @@ async function generateCompletion(prompt) {
     model: 'gpt-4o',
     messages: [{ role: 'user', content: prompt }],
   });
-  return response.choices[0].message.content.trim();
+  return response.choices[0].message.content.replace(/`/g, '').replace(/html/g, '').replace(/"/g, '').trim();
 }
 
 async function generateBody(prompt) {
@@ -37,7 +37,7 @@ async function generateBody(prompt) {
     frequency_penalty: 0.2,
     presence_penalty: 0.5,
   });
-  return response.choices[0].message.content.trim();
+  return response.choices[0].message.content.replace(/`/g, '').replace(/html/g, '').replace(/"/g, '').trim();
 }
 
 // Helper function to generate sitemap
@@ -70,66 +70,44 @@ export default async function handler(req, res) {
     const { request_content } = req.body;
 
     const requestPrompt = `
-   Write an SEO-optimized structured response in HTML for the following topic: '${request_content}'. Ensure you follow the **strict formatting rules** and the requirements below:
+   Write an SEO-optimized structured response in HTML for the search query: '${request_content}'. 
 
-### **Strict Formatting Rules**:
-1. Write only the HTML content. Do not include any '<html>', '<head>', or '<body>' tags.
-2. Do not include instructions, comments, or any additional information outside of the requested content.
-3. Strictly use the following HTML tags for structure:
-   - '<h1>': For the main title of the article.
-   - '<h4>': For the introduction and conclusion.
-   - '<h2>': For the main sections, optimized for SEO with targeted keywords related to '${request_content}'.
-   - '<h3>': For sub-sections (use sparingly and only when necessary to elaborate on complex points).
-   - '<p>': **Every paragraph must be encapsulated within a '<p>' tag.**
-   - '<ul>' and '<ol>': For bullet or numbered lists.
-   - '<table>': Include only if it meaningfully enriches the content with data or comparisons.
+Follow these rules exactly:
 
-### **Content Requirements**:
-1. **Main Title (H1)**:
-   - Create an engaging and descriptive title encapsulated in an '<h1>' tag.
-   - The title must include the search term '${request_content}' and be attention-grabbing.
+1. **HTML-Only Structure**:
+   - Do not include '<html>', '<head>', or '<body>'.
+   - Use only these tags: <h1>, <h4>, <h2>, <h3>, <p>, <ul>, <ol>, <table>.
 
-2. **Introduction (H4)**:
-   - Provide an engaging and concise introduction encapsulated in an '<h4>' tag.
-   - Explain briefly why '${request_content}' is an important or interesting topic.
-   - **Include at least one paragraph within '<p>' tags** to elaborate.
+2. **Title (H1)**:
+   - Must include '${request_content}'.
+   - Make it engaging and attention-grabbing.
 
-3. **Main Sections (H2)**:
-   - Structure the article with '<h2>' tags, ensuring each one is optimized for SEO by incorporating relevant, long-tail keywords.
-   - Include supporting content for each section, and ensure **all paragraphs are encapsulated in '<p>' tags.**
-   - Examples:
-     - '<h2>1. Why Hiring a Freelance Web Developer is the Smartest Choice</h2>'
-     - '<p>Freelance developers offer flexibility...</p>'
+3. **Introduction (H4)**:
+   - Explain why '${request_content}' is important or interesting.
+   - Include at least one <p> paragraph.
 
-4. **Sub-sections (H3)**:
-   - Use '<h3>' tags sparingly, only for breaking down key details or adding clarity to a complex point.
-   - Ensure supporting paragraphs are enclosed in '<p>' tags.
+4. **Main Sections (H2)**:
+   - Each <h2> must include relevant keywords.
+   - All supporting text within <p> tags.
 
-5. **Lists and Tables**:
-   - Integrate bullet lists '<ul>' or numbered lists '<ol>' sparingly, ensuring they add value to the section.
-   - Include an HTML '<table>' only if it enriches the content meaningfully, such as by comparing key data points.
+5. **Sub-sections (H3)**:
+   - Use sparingly for complex points.
+   - All supporting text within <p> tags.
 
-6. **Conclusion (H4)**:
-   - Summarize the article's key points with an engaging '<h4>' conclusion.
-   - Include supporting content in a '<p>' tag and finish with a call-to-action (CTA).
+6. **Lists & Tables**:
+   - Use <ul>/<ol> sparingly for added value.
+   - Use <table> only if it meaningfully enriches data or comparisons.
 
-7. **Variable Length**:
-   - The article should be between **600 and 1000 words**, depending on the complexity of '${request_content}'.
+7. **Conclusion (H4)**:
+   - Summarize main points and include a CTA.
+   - Use at least one <p> paragraph.
 
-### **Editorial Style**:
-1. Maintain a professional, engaging, and informative tone.
-2. Ensure all headings and content directly address the search intent behind '${request_content}'.
-3. Avoid unnecessary repetition and diversify sentence structures to keep the content engaging.
+8. **Length & Style**:
+   - 600–1000 words.
+   - Professional, engaging, informative.
+   - Must be written in the same language as '${request_content}'.
 
-### **Language Requirement**:
-- The article must ALWAYS be written in the language of the request or search term '${request_content}'.
-
-### **Summary of Expectations**:
-- **Main Title (H1):** Optimized for SXO (click-worthy and keyword-rich).
-- **Main Sections (H2):** SEO-optimized with relevant long-tail keywords, aligned with the search intent.
-- **Paragraphs ('<p>'):** **Every block of text must be enclosed in '<p>' tags.**
-- **Variable Length (600-1000 words):** Adjust based on topic complexity.
-- Write ONLY the requested content, with no extraneous information.
+Return only the HTML code (no instructions, comments, or extra text).
 
     `;
 
@@ -167,8 +145,8 @@ export default async function handler(req, res) {
           .eq('id', existingData.id));
       } else {
         // Generate content using OpenAI
-        const generatedContentPromise = generateBody(requestPrompt);
-        console.log('Generated content:', generatedContentPromise); // Log the generated content
+        const generatedContentPromise = generateBody(requestPrompt)
+         //console.log('Generated content:', generatedContentPromise); // Log the generated content
 
         // Generate SEO title and description
         const [seoTitle, seoDesc] = await Promise.all([

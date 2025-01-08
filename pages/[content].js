@@ -60,7 +60,7 @@ export default function ContentPage() {
       <Head>
         {currentContent && <title>{currentContent.content_title}</title>}
         {currentContent && <meta name="description" content={currentContent.content_desc} />}
-        <meta name="keywords" content={`${currentContent.content_request}, best results, full guide`} />
+        <meta name="keywords" content={`${currentContent?.content_request}, best results, full guide`} />
         <meta name="author" content="My Expert" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="robots" content="index, follow" />

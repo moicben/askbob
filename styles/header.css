@@ -10,7 +10,7 @@ header {
   position: sticky;
   top: 0rem;
   border-bottom: solid #2b2b2b 1px;
-  background-color: #191a1ad6;
+  background-color: #191a1abb;
   margin-bottom: 2rem;
   z-index: 10;
   backdrop-filter: blur(10px);
@@ -22,7 +22,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem 0rem;
+  padding: 1rem 1.5rem;
   flex-direction: row;
 }
 

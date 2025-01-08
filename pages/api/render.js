@@ -13,7 +13,7 @@ const openai = new OpenAI({
 // Helper function to generate OpenAI completions
 async function generateCompletion(prompt) {
   const response = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo',
+    model: 'gpt-4o',
     messages: [{ role: 'user', content: prompt }],
   });
   return response.choices[0].message.content.trim();
