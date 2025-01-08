@@ -155,6 +155,7 @@ button{
 
 button:hover{
   background-color: #5c5c5c;
+  cursor: pointer;
 }
 
 
@@ -550,6 +551,9 @@ hr{
 
   .slick-slide .review-classic{
     display: block;
+    margin-top: .2rem;
+    font-size: .85rem;
+      height: 20px;
   }
 
   .slick-slide button{
@@ -565,8 +569,11 @@ hr{
   }
 
   .close-button{
-    top: .25rem;
+    top: .55rem;
     right: .5rem;
+    background-color: #5c5c5c47;
+    cursor: pointer;
+    z-index: 10;
   }
 
 
