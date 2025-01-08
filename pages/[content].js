@@ -122,7 +122,7 @@ export default function ContentPage() {
           {loading || !currentContent ? (
             <div className="spinner-container">
               <div className="spinner"></div>
-              <p>On the way</p>
+              <p>Loading the content</p>
             </div>
           ) : (
             <>
