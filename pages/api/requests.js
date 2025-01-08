@@ -37,7 +37,7 @@ async function generateBody(prompt) {
     frequency_penalty: 0.2,
     presence_penalty: 0.5,
   });
-  return response.choices[0].message.content.replace(/`/g, '').replace(/html/g, '').replace(/"/g, '').trim();
+  return response.choices[0].message.content.replace(/`/g, '').replace(/html/g, '').replace(/"/g, '').trim().replace(/&quot;/g, '');
 }
 
 // Helper function to generate sitemap
@@ -117,7 +117,8 @@ Return only the HTML code (no instructions, comments, or extra text).
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '') // Remove accents
       .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
+      .replace(/^-+|-+$/g, '')
+      .replace(/&quot;/g, '');
 
     try {
       console.log('Request content:', request_content); // Log the request content
