@@ -22,7 +22,7 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 1rem 0rem;
   flex-direction: row;
 }
 
@@ -89,4 +89,16 @@ header {
   position: absolute;
   left: 4rem;
   color: white;
+}
+
+
+
+
+
+
+
+@media (max-width:1024px){
+  .search-bar{
+    padding: 1rem 1.5rem;
+  }
 }
