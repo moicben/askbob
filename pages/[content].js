@@ -52,6 +52,8 @@ export default function ContentPage() {
       }
     };
 
+    console.log('router.query LENGGGGG', router.query.content);
+
     fetchContent();
   }, [router.query]);
 
@@ -63,7 +65,7 @@ export default function ContentPage() {
         <meta name="keywords" content={`${currentContent?.content_request}, best results, full guide`} />
         <meta name="author" content="My Expert" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="robots" content="index, follow" />
+        <meta name="robots" content={router.query.content && router.query.content.length < 10 ? "noindex, nofollow" : "index, follow"} />
         <link rel="icon" href="/bob-favicon.png" />
         
         {/* Open Graph tags */}
