@@ -18,7 +18,7 @@
   right: -3rem;
   top: -3rem;
   bottom: 1rem;
-  background-color: #212121ba;
+  background-color: #21212190;
   backdrop-filter: blur(10px);
   z-index: 1;
   display: flex;
@@ -40,13 +40,18 @@
   align-items: center;
   flex-direction: row;
   width: 720px;
+  margin-top: .5rem;
 }
 
 .locals-cache input{
   margin-right: .75rem;
   width: 300px;
-  height: 54px;
+  height: 52px;
   margin-top: 2px;
+} 
+
+.locals-cache button{
+  height: 49px;
 }
 
 

@@ -112,8 +112,8 @@ const LocalSlider = ({ currentContent }) => {
       {currentContent.length > 2 && (
         <div className='locals-container'>
           <div className='locals-cache'>
-            <h3>Discover Bob's Selection of Local Partners</h3>
-            <p>Bob has selected the best local partners to help you with your current request</p>
+            <h3>Selection of Local Partners</h3>
+            <p>Discover Bob's selection of trusted local partners to assist with your current request:</p>
             <form onSubmit={handleSubmit}>
               <input
                 type="email"
@@ -140,7 +140,7 @@ const LocalSlider = ({ currentContent }) => {
                   <span className='review-classic'>{local.local_rating}/5</span>
                   <p>{local.local_ratingCount} reviews</p>
                 </article>
-                <button>Discover company</button>
+                <button>Discover</button>
               </div>
             ))}
           </Slider>
