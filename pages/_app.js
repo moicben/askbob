@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import '../styles/index.css';
 import '../styles/profil.css';
 import '../styles/header.css';
-
+import '../styles/locals.css';
 
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"

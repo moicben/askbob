@@ -36,6 +36,8 @@ const LocalSlider = ({ currentContent }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [iframeSrc, setIframeSrc] = useState('');
   const [iframeError, setIframeError] = useState(false);
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
 
   const openModal = (url) => {
     setIframeSrc(url);
@@ -52,6 +54,38 @@ const LocalSlider = ({ currentContent }) => {
 
   const handleIframeError = () => {
     setIframeError(true);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage('');
+
+    try {
+      const response = await fetch('/api/render?user=true', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_request: currentContent[0].local_request,
+          user_email: email,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setMessage('Access granted');
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        document.querySelector('.locals-cache').style.opacity = '0';
+        await new Promise((resolve) => setTimeout(resolve, 2250));
+        document.querySelector('.locals-cache').style.display = 'none';
+      } else {
+        setMessage(result.error || 'Error submitting user');
+      }
+    } catch (error) {
+      setMessage('Error submitting user');
+    }
   };
 
   const sliderSettings = {
@@ -76,7 +110,22 @@ const LocalSlider = ({ currentContent }) => {
   return (
     <>
       {currentContent.length > 2 && (
-        <div>
+        <div className='locals-container'>
+          <div className='locals-cache'>
+            <h3>Discover Bob's Selection of Local Partners</h3>
+            <p>Bob has selected the best local partners to help you with your current request</p>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="email"
+                placeholder="Email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <button type="submit">Get Access</button>
+            </form>
+            {message && <p>{message}</p>}
+          </div>
           <Slider {...sliderSettings}>
             {currentContent.map((local, index) => (
               <div key={index} className="local-slide" onClick={() => openModal(local.local_website)}>

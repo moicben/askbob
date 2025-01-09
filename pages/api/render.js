@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import OpenAI from 'openai';
+//import { getAnalytics } from '@vercel/analytics';
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
@@ -29,11 +30,18 @@ async function fetchLocals(content) {
     throw new Error('Error fetching locals');
   }
 
-  return localsData;
+  // Sort localsData to ensure locals with non-null local_img are first
+  const sortedLocalsData = localsData.sort((a, b) => {
+    if (a.local_img && !b.local_img) return -1;
+    if (!a.local_img && b.local_img) return 1;
+    return 0;
+  });
+
+  return sortedLocalsData;
 }
 
 export default async function handler(req, res) {
-  const { content, faq, profil } = req.query;
+  const { content, faq, profil, user } = req.query;
 
   if (content) {
     console.log("CONTENT : ", content);
@@ -144,5 +152,41 @@ export default async function handler(req, res) {
     return res.status(200).json(profilData);
   }
 
-  return res.status(400).json({ error: 'Content, FAQ, Locals, or Similar is required' });
+  // Handle user submission
+  if (user) {
+    const { user_request, user_email } = req.body;
+
+    console.log("LLLLLLLLLLLLLLuser REQUEST : ", user_request);
+    console.log("LLLLLLLLLLLLLLuser EMAIL : ", user_email);
+
+    if (!user_request || !user_email) {
+      return res.status(400).json({ error: 'Missing user_request or user_email' });
+    }
+    
+
+    try {
+      // Fetch Vercel Analytics data
+      //const analyticsData = await getAnalytics();
+
+      // Insert user data along with analytics and speed insights data into Supabase
+      const { data: userData, error: userError } = await supabase
+        .from('users')
+        .insert([{
+          user_request,
+          user_email,
+        }]);
+
+      if (userError) {
+        console.error('Error inserting user:', userError);
+        return res.status(500).json({ error: 'Error inserting user' });
+      }
+
+      return res.status(200).json({ message: 'user submitted successfully', user: userData });
+    } catch (error) {
+      console.error('Error fetching Vercel data or inserting user:', error);
+      return res.status(500).json({ error: 'Error fetching Vercel data or inserting user' });
+    }
+  }
+
+  return res.status(400).json({ error: 'Content, FAQ, Locals, Similar, or user is required' });
 }

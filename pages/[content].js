@@ -40,7 +40,7 @@ export default function ContentPage() {
         const contentResponse = await fetch(`/api/render?content=${content}`);
         const contentData = await contentResponse.json();
 
-        console.log('contentData', contentData.locals);
+        //console.log('contentData', contentData.locals);
         if (contentResponse.ok && contentData.locals) {
           setLoading(false);
           setCurrentContent(contentData);
@@ -52,7 +52,7 @@ export default function ContentPage() {
       }
     };
 
-    console.log('router.query LENGGGGG', router.query.content);
+    //console.log('router.query', router.query.content);
 
     fetchContent();
   }, [router.query]);
@@ -67,6 +67,7 @@ export default function ContentPage() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="robots" content={router.query.content && router.query.content.length < 10 ? "noindex, nofollow" : "index, follow"} />
         <link rel="icon" href="/bob-favicon.png" />
+        <link rel="canonical" href={`https://askbob.online/${router.query.content}`} />
         
         {/* Open Graph tags */}
         {currentContent && (
@@ -129,6 +130,8 @@ export default function ContentPage() {
           ) : (
             <>
               <LocalSlider currentContent={currentContent.locals} />
+
+
               {currentContent && currentContent.content_body ? (
                 <div className="content" dangerouslySetInnerHTML={{ __html: currentContent.content_body }} />
               ) : (
