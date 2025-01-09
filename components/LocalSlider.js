@@ -113,7 +113,7 @@ const LocalSlider = ({ currentContent }) => {
         <div className='locals-container'>
           <div className='locals-cache'>
             <h3>Selection of Local Partners</h3>
-            <p>Discover Bob's selection of trusted local partners to assist with your current request:</p>
+            <p>Discover Bob's selection of trusted local partners to assist your request:</p>
             <form onSubmit={handleSubmit}>
               <input
                 type="email"
