@@ -117,7 +117,7 @@ const LocalSlider = ({ currentContent }) => {
             <form onSubmit={handleSubmit}>
               <input
                 type="email"
-                placeholder="Email"
+                placeholder="Enter your Email..."
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
